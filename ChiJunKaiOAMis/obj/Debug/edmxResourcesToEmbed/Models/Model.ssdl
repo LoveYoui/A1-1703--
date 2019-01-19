@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OADBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Classes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="BeginTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Dep">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="DTel" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RealName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Sex" Type="varchar" MaxLength="2" />
+    <Property Name="MTel" Type="varchar" MaxLength="50" />
+    <Property Name="EMail" Type="varchar" MaxLength="500" />
+    <Property Name="DepId" Type="int" />
+    <Property Name="EmployDate" Type="datetime" />
+    <Property Name="State" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Students">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Sex" Type="varchar" MaxLength="2" />
+    <Property Name="MTel" Type="varchar" MaxLength="50" />
+    <Property Name="QQ" Type="varchar" MaxLength="50" />
+    <Property Name="Birthday" Type="date" />
+    <Property Name="CurClassId" Type="uniqueidentifier" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“OADB.dbo.View_Employees”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="View_Employees">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="RealName" />
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RealName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Sex" Type="varchar" MaxLength="2" />
+    <Property Name="MTel" Type="varchar" MaxLength="50" />
+    <Property Name="EMail" Type="varchar" MaxLength="500" />
+    <Property Name="DepId" Type="int" />
+    <Property Name="EmployDate" Type="datetime" />
+    <Property Name="State" Type="varchar" MaxLength="10" />
+    <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Employees_Dep">
+    <End Role="Dep" Type="Self.Dep" Multiplicity="0..1" />
+    <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dep">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="DepId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Students_Classes">
+    <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
+    <End Role="Students" Type="Self.Students" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Classes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Students">
+        <PropertyRef Name="CurClassId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OADBModelStoreContainer">
+    <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Dep" EntityType="Self.Dep" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="View_Employees" EntityType="Self.View_Employees" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [View_Employees].[UserID] AS [UserID], 
+    [View_Employees].[RealName] AS [RealName], 
+    [View_Employees].[Sex] AS [Sex], 
+    [View_Employees].[MTel] AS [MTel], 
+    [View_Employees].[EMail] AS [EMail], 
+    [View_Employees].[DepId] AS [DepId], 
+    [View_Employees].[EmployDate] AS [EmployDate], 
+    [View_Employees].[State] AS [State], 
+    [View_Employees].[Name] AS [Name]
+    FROM [dbo].[View_Employees] AS [View_Employees]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Employees_Dep" Association="Self.FK_Employees_Dep">
+      <End Role="Dep" EntitySet="Dep" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Students_Classes" Association="Self.FK_Students_Classes">
+      <End Role="Classes" EntitySet="Classes" />
+      <End Role="Students" EntitySet="Students" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

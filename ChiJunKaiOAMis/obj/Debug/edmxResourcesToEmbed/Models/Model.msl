@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="OADBModelStoreContainer" CdmEntityContainer="OADBEntities">
+    <EntitySetMapping Name="Classes">
+      <EntityTypeMapping TypeName="OADBModel.Classes">
+        <MappingFragment StoreEntitySet="Classes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dep">
+      <EntityTypeMapping TypeName="OADBModel.Dep">
+        <MappingFragment StoreEntitySet="Dep">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DTel" ColumnName="DTel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="OADBModel.Employees">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="RealName" ColumnName="RealName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="MTel" ColumnName="MTel" />
+          <ScalarProperty Name="EMail" ColumnName="EMail" />
+          <ScalarProperty Name="DepId" ColumnName="DepId" />
+          <ScalarProperty Name="EmployDate" ColumnName="EmployDate" />
+          <ScalarProperty Name="State" ColumnName="State" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Students">
+      <EntityTypeMapping TypeName="OADBModel.Students">
+        <MappingFragment StoreEntitySet="Students">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="MTel" ColumnName="MTel" />
+          <ScalarProperty Name="QQ" ColumnName="QQ" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="CurClassId" ColumnName="CurClassId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="View_Employees">
+      <EntityTypeMapping TypeName="OADBModel.View_Employees">
+        <MappingFragment StoreEntitySet="View_Employees">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="RealName" ColumnName="RealName" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="MTel" ColumnName="MTel" />
+          <ScalarProperty Name="EMail" ColumnName="EMail" />
+          <ScalarProperty Name="DepId" ColumnName="DepId" />
+          <ScalarProperty Name="EmployDate" ColumnName="EmployDate" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

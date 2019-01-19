@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OADBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Classes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BeginTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Dep">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DTel" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RealName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Sex" Type="varchar" MaxLength="2" />
+          <Property Name="MTel" Type="varchar" MaxLength="50" />
+          <Property Name="EMail" Type="varchar" MaxLength="500" />
+          <Property Name="DepId" Type="int" />
+          <Property Name="EmployDate" Type="datetime" />
+          <Property Name="State" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Sex" Type="varchar" MaxLength="2" />
+          <Property Name="MTel" Type="varchar" MaxLength="50" />
+          <Property Name="QQ" Type="varchar" MaxLength="50" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="CurClassId" Type="uniqueidentifier" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“OADB.dbo.View_Employees”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="View_Employees">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RealName" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RealName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Sex" Type="varchar" MaxLength="2" />
+          <Property Name="MTel" Type="varchar" MaxLength="50" />
+          <Property Name="EMail" Type="varchar" MaxLength="500" />
+          <Property Name="DepId" Type="int" />
+          <Property Name="EmployDate" Type="datetime" />
+          <Property Name="State" Type="varchar" MaxLength="10" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Employees_Dep">
+          <End Role="Dep" Type="Self.Dep" Multiplicity="0..1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dep">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="DepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Students_Classes">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="CurClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OADBModelStoreContainer">
+          <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dep" EntityType="Self.Dep" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_Employees" EntityType="Self.View_Employees" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Employees].[UserID] AS [UserID], 
+    [View_Employees].[RealName] AS [RealName], 
+    [View_Employees].[Sex] AS [Sex], 
+    [View_Employees].[MTel] AS [MTel], 
+    [View_Employees].[EMail] AS [EMail], 
+    [View_Employees].[DepId] AS [DepId], 
+    [View_Employees].[EmployDate] AS [EmployDate], 
+    [View_Employees].[State] AS [State], 
+    [View_Employees].[Name] AS [Name]
+    FROM [dbo].[View_Employees] AS [View_Employees]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Employees_Dep" Association="Self.FK_Employees_Dep">
+            <End Role="Dep" EntitySet="Dep" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Students_Classes" Association="Self.FK_Students_Classes">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OADBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Classes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BeginTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Students_Classes" FromRole="Classes" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="Dep">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DTel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Dep" FromRole="Dep" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="RealName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="MTel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMail" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DepId" Type="Int32" />
+          <Property Name="EmployDate" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Dep" Relationship="Self.FK_Employees_Dep" FromRole="Employees" ToRole="Dep" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sex" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="MTel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QQ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="CurClassId" Type="Guid" />
+          <NavigationProperty Name="Classes" Relationship="Self.FK_Students_Classes" FromRole="Students" ToRole="Classes" />
+        </EntityType>
+        <EntityType Name="View_Employees">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RealName" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="RealName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="MTel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMail" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DepId" Type="Int32" />
+          <Property Name="EmployDate" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Students_Classes">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="CurClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Dep">
+          <End Role="Dep" Type="Self.Dep" Multiplicity="0..1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dep">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="DepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OADBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Classes" EntityType="Self.Classes" />
+          <EntitySet Name="Dep" EntityType="Self.Dep" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" />
+          <EntitySet Name="Students" EntityType="Self.Students" />
+          <EntitySet Name="View_Employees" EntityType="Self.View_Employees" />
+          <AssociationSet Name="FK_Students_Classes" Association="Self.FK_Students_Classes">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Dep" Association="Self.FK_Employees_Dep">
+            <End Role="Dep" EntitySet="Dep" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OADBModelStoreContainer" CdmEntityContainer="OADBEntities">
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="OADBModel.Classes">
+              <MappingFragment StoreEntitySet="Classes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dep">
+            <EntityTypeMapping TypeName="OADBModel.Dep">
+              <MappingFragment StoreEntitySet="Dep">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DTel" ColumnName="DTel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="OADBModel.Employees">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="MTel" ColumnName="MTel" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="DepId" ColumnName="DepId" />
+                <ScalarProperty Name="EmployDate" ColumnName="EmployDate" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="OADBModel.Students">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="MTel" ColumnName="MTel" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="CurClassId" ColumnName="CurClassId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Employees">
+            <EntityTypeMapping TypeName="OADBModel.View_Employees">
+              <MappingFragment StoreEntitySet="View_Employees">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="MTel" ColumnName="MTel" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="DepId" ColumnName="DepId" />
+                <ScalarProperty Name="EmployDate" ColumnName="EmployDate" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
